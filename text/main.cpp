@@ -22,6 +22,7 @@ struct Student
     double score[10];
     double min;
     double max;
+    double agv;
 };
 struct Referee
 {
@@ -29,14 +30,29 @@ struct Referee
     string sex;
     string tel;
 };
-void Sort()
+struct Student s[100];
+struct Referee r[100];
+void Sort(Student *s)
 {
-    
+    int i,j;
+    struct Student temp;
+    for(i=0;i<s[0].f;i++)
+    {
+        for(j=0;j<s[0].f;j++)
+        {
+            if(s[j].agv<s[j+1].agv)
+            {
+                temp=s[j];
+                s[j]=s[j+1];
+                s[j+1]=temp;
+            }
+        }
+    }
 }
-/*void input(Student *s,int n )
+void input(Student *s,int n )
 {
-    int i;
-    for(i=0;i<=n;i++)
+    int i,j;
+    for(i=0;i<n;i++)
     {
         cout<<"输入第"<<i+1<<"个学生成绩"<<endl;
         cin>>s[i].score[0];
@@ -45,8 +61,35 @@ void Sort()
         cin>>s[i].score[3];
         cin>>s[i].score[4];
     }
+    for(i=0; i<n; i++)
+    {
+        s[i].max=s[i].score[0];
+        for(j=0; j<5; j++)
+        {
+            if(s[i].score[j]>s[i].max)
+            {
+                s[i].max=s[i].score[j];
+            }
+        }
+    }
+    for(i=0; i<n; i++)
+    {
+        s[i].min=s[i].score[0];
+        for(j=0; j<5; j++)
+        {
+            if(s[i].score[j]<s[i].min)
+            {
+                s[i].min=s[i].score[j];
+            }
+        }
+    }
+
+    for(i=0;i<n;i++)
+    {
+        s[i].agv=(s[i].score[0]+s[i].score[1]+s[i].score[2]+s[i].score[3]+s[i].score[4]-s[i].min-s[i].max)/3;
+    }
 }
-*/
+
 int inputs(Student *s)
 {
     int n;
@@ -73,10 +116,8 @@ int inputs(Student *s)
 }
 void inputr(Referee *r)
 {
-    int i,n;
-    cout<<"输入裁判员人数";
-    cin>>n;
-    for(i=0; i<n; i++)
+    int i;
+    for(i=0; i<5; i++)
     {
         cout<<"请输入第"<<i+1<<"号裁判的姓名:";
         cin>>r[i].name;
@@ -89,45 +130,12 @@ void inputr(Referee *r)
 void output(Student *s,int n,Referee *r)
 {
     int i;
-    int j;
-    for(i=0; i<n; i++)
-    {
-        s[i].min=s[i].score[0];
-        for(j=0; j<5; j++)
-        {
-            if(s[i].score[j]<s[i].min)
-            {
-                s[i].min=s[i].score[j];
-            }
-        }
-    }
-    for(i=0; i<n; i++)
-    {
-        s[i].max=s[i].score[0];
-        for(j=0; j<5; j++)
-        {
-            if(s[i].score[j]>s[i].max)
-            {
-                s[i].max=s[i].score[j];
-            }
-        }
-    }
     
-    for(i=0; i<s[0].f; i++)
+    for(i=0; i<n; i++)
     {
         cout<<"第"<<i+1<<"学生";
-        cout<<"姓名是：";
-        cout<<s[i].name<<endl;
-        cout<<"性别：";
-        cout<<s[i].sex<<endl;
-        cout<<"节目名称：";
-        cout<<s[i].Program<<endl;
-        cout<<"表演形式：";
-        cout<<s[i].form<<endl;
-        cout<<"班级：";
-        cout<<s[i].Class<<endl;
-        cout<<"学号：";
-        cout<<s[i].tel<<endl;
+        cout<<"|姓名|性别|节目名称|表演形式|班级|学号|"<<endl;
+        cout<<"       "<<s[i].name<<"     "<<s[i].sex<<"     "<<s[i].Program<<"     "<<s[i].form<<"     "<<s[i].Class<<"     "<<s[i].tel<<"     "<<endl;
         cout<<"第一个评委"<<r[0].name<<"的打分为：";
         cout<<s[i].score[0]<<endl;
         cout<<"第二个评委"<<r[1].name<<"的打分为：";
@@ -143,48 +151,62 @@ void output(Student *s,int n,Referee *r)
         cout<<"去掉一个最高成绩为：";
         cout<<s[i].max<<endl;
         cout<<"平均分是：";
-        cout<<(s[i].score[0]+s[i].score[1]+s[i].score[2]+s[i].score[3]+s[i].score[4]-s[i].min-s[i].max)/3<<endl;
+        cout<<s[i].agv<<endl;
         
     }
 }
+
+int menu()
+ {
+ int item;
+ cout << "|--------------------------------------|\n";
+ cout << "|----------欢迎使用系统------------------|\n";
+ cout << "|--------------------------------------|\n";
+ cout << "|------   1:输入参赛者信息         -------|\n";
+ cout << "|------   2:输入裁判员信息         -------|\n";
+ cout << "|------   3:输入参赛员成绩         -------|\n";
+ cout << "|------   4:写入裁判员信息         -------|\n";
+ cout << "|------   5:参赛者成绩排序显示      -------|\n";
+ 
+ do
+ {
+     cout<<"请输入序号（1-7）";
+     cin >> item;
+ 
+ }while(item<1||item>7);
+     return item;
+     }
+ 
+
 int main(int argc, const char * argv[]) {
-    struct Student s[100];
-    struct Referee r[100];
-    inputs(s);
-    inputr(r);
-//    input(s,s[0].f);
-    
-    output(s,s[0].f,r);
-/*int i;
-    while(1)
+   
+        while(1)
     {
-        cout << "|--------------------------------------|\n";
-        cout << "|----------欢迎使用系统------------------|\n";
-        cout << "|--------------------------------------|\n";
-        cout << "|------   1:输入参赛者信息         -------|\n";
-        cout << "|------   2:修改裁判员信息         -------|\n";
-        cout << "|------   3:读取参赛员信息         -------|\n";
-        cout << "|------   4:读取裁判员信息         -------|\n";
-        cout << "|------   5:输入参赛者成绩         -------|\n";
-        cout << "|------   6:最高分 最低分 平均分    -------|\n";
-        cout << "|------   7:参赛者成绩排序显示      -------|\n";
-        cout << "            \n请输入选项          “；
-        cin >> i;
-        
-        switch(i)
+        switch(menu())
         {
             case 1:
-                inputs();
+                inputs(s);
                 break;
             
             case 2:
-                inputr();
+                inputr(r);
                 break;
+            
+            case 3:
+                input(s,s[0].f);
+                break;
+                
             case 5:
-                input();
+                Sort(s);
                 break;
+                
+                
+        }
+        
     }
- 
-*/
+    inputs(s);
+    inputr(r);
+    input(s,s[0].f);
+    output(s,s[0].f,r);
     return 0;
 }
